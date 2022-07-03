@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+    <style>
+
+    #container{
+        display: flex;
+    }
+    /* crazy css prop erties used here Doo remember it... */
+    #input-section{
+        flex: 1;
+        margin: 5%;
+    }
+
+    #output-section{
+        flex: 1;
+        margin: 5%;
+        border: 2px solid red;
+    }
+    #translate-btn{
+        display:block;
+        margin: 5% 0%;
+        padding: 10px;
+        background-color: aqua;
+    }
+    #input-text{
+        width: 99%;
+        
+    }
+
+    </style>
+
+  <body>
+    <div id="container">
+      <div id="input-section">
+
+        <!--Create button that will run translate text function, give id "translate-btn"-->
+        <button onclick="translateText()" id="translate-btn">Translate</button>
+
+        <!--Create input that will accept text to be translated, give id "input-text"-->
+        <textarea id="input-text"></textarea>
+      </div>
+
+      <!-- output of certain language -->
+      <div id="output-section">
+
+        <p id="translated-text">
+
+          <!--Show translated text here-->
+
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+
+async function translateText(){
+    // fetch = call
+    try {
+        let input = document.getElementById("input-text").value;
+        console.log(input);
+
+        let response = await fetch("https://libretranslate.de/translate", {
+
+            method: "POST",
+
+            // we are adding body because of 
+            body: JSON.stringify({
+                
+                q:input,
+                source:"en",
+                target:"hi",
+                format:"text",
+
+            }),
+
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        let data = await response.json();
+        console.log(data);
+        // iss barr data lana nahi he bhejna he to kya krenge = post request karni he smjo.
+
+        // show bhi to krna he na.
+        // IMP = data.translated text.
+        document.getElementById("translated-text").innerHTML = data.translatedText;
+      }
+      catch (error) {
+          console.log("error", error);
+      }
+};
+
+
+</script>
